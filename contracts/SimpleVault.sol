@@ -83,7 +83,7 @@ contract SimpleVault is Ownable, ReentrancyGuard{
     }
 
     // getTopDepositors: returns 2 users with most of funds in the pool
-    function getTopDepositors() public view returns (TopHolder[2] memory) {
-        return topHolder;
+    function getTopDepositors() public view returns (address[2]  memory) {
+        return [topHolder[0]._address, topHolder[1]._address];
     }
 }
