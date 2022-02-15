@@ -45,7 +45,7 @@ contract SimpleVault is Ownable, ReentrancyGuard{
     function deposit(uint256 _amount) public {
         simpleToken.transferFrom(msg.sender, address(this), _amount);
         _userPool[msg.sender]._balance.add(_amount);
-        updateTopHolder(msg.sender);
+        updateTopHolder(msg.sender, _userPool[msg.sender]._balance);
     }
 
     // withdraw: transfer funds out of the contract and track balance
