@@ -12,4 +12,8 @@ contract SimpleToken is ERC20 {
     constructor(string memory _name, string memory _symbol, uint128 quantity) ERC20(_name, _symbol) {
         _mint(msg.sender, quantity * 10 ** uint(decimals()));
     }
+
+    function balanceOf(address account) public view override returns(uint256){
+        return this.balanceOf(account);
+    }
 }
