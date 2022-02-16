@@ -28,32 +28,36 @@ describe("SimpleVault", function () {
     const simpleVault = await SimpleVault.deploy(simpleToken.address);
     await simpleVault.deployed();
 
-    // verify vault initialized correctly
-    console.log(await simpleVault.getTopDepositors());
-    
+    // verify vault initialized
     // top vault addresses should be empty
     let topDepositors = await simpleVault.getTopDepositors();
-    expect(topDepositors[0]).to.equal(['0x0000000000000000000000000000000000000000','0x0000000000000000000000000000000000000000']);
+    expect(topDepositors[0]).to.equal('0x0000000000000000000000000000000000000000');
+    expect(topDepositors[1]).to.equal('0x0000000000000000000000000000000000000000');
 
     // todo: deposit 100 tokens from owner
     await simpleToken.increaseAllowance(simpleVault.address, BigInt(100 * Math.pow(10, 18)));
     await simpleVault.deposit(BigInt(100 * Math.pow(10, 18)));
 
     // todo: verify owner is #1 depositor
-    console.log(await simpleVault.getTopDepositors());
-    //expect(await impleVault.getTopDepositors()).to.equal(["0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266","0x0000000000000000000000000000000000000000"]);
+    topDepositors = await simpleVault.getTopDepositors();
+    expect(topDepositors[0]).to.equal(owner.address);
+    expect(topDepositors[1]).to.equal('0x0000000000000000000000000000000000000000');
     
     // todo: deposit 50 from account number 2
     await simpleToken.connect(secondary).increaseAllowance(simpleVault.address, BigInt(100 * Math.pow(10, 18)));
     await simpleVault.connect(secondary).deposit(BigInt(50 * Math.pow(10, 18)));
 
-    console.log(await simpleVault.getTopDepositors());
+    topDepositors = await simpleVault.getTopDepositors();
+    expect(topDepositors[0]).to.equal(owner.address);
+    expect(topDepositors[1]).to.equal(secondary.address);
     
     // todo: withdraw 75 token from account 1 (should leave balance of 25)
     await simpleToken.increaseAllowance(owner.address, BigInt(75 * Math.pow(10, 18)));
     await simpleVault.withdraw(BigInt(75 * Math.pow(10, 18)));
-    console.log(await simpleVault.balanceOf(owner.address));
-    console.log(await simpleVault.getTopDepositors());
+    
+    topDepositors = await simpleVault.getTopDepositors();
+    expect(topDepositors[0]).to.equal(secondary.address);
+    expect(topDepositors[1]).to.equal(owner.address);
 
     // todo:
   });
