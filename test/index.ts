@@ -14,14 +14,7 @@ describe("SimpleVault", function () {
     const SimpleVault = await ethers.getContractFactory("SimpleVault");
     const simpleVault = await SimpleVault.deploy(simpleToken.address);
     await simpleVault.deployed();
-
-    expect(await simpleVault.getTopDepositors()).to.be(0);
-
-    //const setGreetingTx = await simpleVault.setGreeting("Hola, mundo!");
-
-    // wait until the transaction is mined
-    //await setGreetingTx.wait();
-
-    //expect(await simpleVault.greet()).to.equal("Hola, mundo!");
+    console.log(await simpleVault.getTopDepositors());
+    expect(await simpleVault.getTopDepositors()).to.equal(['0x0000000000000000000000000000000000000000','0x0000000000000000000000000000000000000000']);
   });
 });
