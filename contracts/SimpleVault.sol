@@ -59,8 +59,11 @@ contract SimpleVault is Ownable, ReentrancyGuard{
 
     // updateTopHolder: check the top 2 slots to 
     // params what address just updated their balance
+    // there's a major flaw here where 1 or 2 withdraws enough to be 3 or less, but we don't have any to back-fill the slot.
+    // was trying to avoid itteration to save on gas, but ultimately I'll need to come up with a new method that isn't a fuel guzzler
     function updateTopHolder(address _updateFor, uint256 _newAmount) private {
         // 2 becomes 1 && 1 becomes 2
+        // 1 becomes 2 && 2 becomes 1
         // replace 1 && 1 becomes 2
         // replace 2
         if(topHolder[1]._address == _updateFor && _newAmount > topHolder[0]._balance){
@@ -69,8 +72,7 @@ contract SimpleVault is Ownable, ReentrancyGuard{
             topHolder[0]._address = _updateFor;
             topHolder[0]._balance = _newAmount;
             topHolder[1] = tmpHolder;
-        }
-        if(_newAmount > topHolder[0]._balance){
+        }else if(_newAmount > topHolder[0]._balance){
             // if new #1, move 1 to 2 and add new 1;
             topHolder[1] = topHolder[0];
             topHolder[0]._balance = _newAmount;
