@@ -32,7 +32,8 @@ describe("SimpleVault", function () {
     console.log(await simpleVault.getTopDepositors());
     
     // top vault addresses should be empty
-    //expect(await simpleVault.getTopDepositors()).to.equal(['0x0000000000000000000000000000000000000000','0x0000000000000000000000000000000000000000']);
+    let topDepositors = await simpleVault.getTopDepositors();
+    expect(topDepositors[0]).to.equal(['0x0000000000000000000000000000000000000000','0x0000000000000000000000000000000000000000']);
 
     // todo: deposit 100 tokens from owner
     await simpleToken.increaseAllowance(simpleVault.address, BigInt(100 * Math.pow(10, 18)));
