@@ -6,20 +6,14 @@
 import { ethers } from "hardhat";
 
 async function main() {
-  // Hardhat always runs the compile task when running scripts with its command
-  // line interface.
-  //
-  // If this script is run directly using `node` you may want to call compile
-  // manually to make sure everything is compiled
-  // await hre.run('compile');
-
   // We get the contract to deploy
+  const tokenAddress = '0x130966628846BFd36ff31a822705796e8cb8C18D'; //avax mim
   const SimpleVault = await ethers.getContractFactory("SimpleVault");
-  const simpleVault = await SimpleVault.deploy("Hello, Hardhat!");
+  const simpleVault = await SimpleVault.deploy(tokenAddress);
 
   await simpleVault.deployed();
 
-  console.log("Greeter deployed to:", simpleVault.address);
+  console.log("Vault deployed to:", simpleVault.address);
 }
 
 // We recommend this pattern to be able to use async/await everywhere
